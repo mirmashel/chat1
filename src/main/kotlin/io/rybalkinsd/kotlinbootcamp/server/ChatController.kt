@@ -29,9 +29,29 @@ class ChatController {
         name.length > 20 -> ResponseEntity.badRequest().body("Name is too long")
         usersOnline.contains(name) -> ResponseEntity.badRequest().body("Already logged in")
         else -> {
+
             usersOnline[name] = name
             messages += "[$name] logged in".also { log.info(it) }
             ResponseEntity.ok().build()
+        }
+    }
+
+    val usersReg: MutableMap<String, String> = ConcurrentHashMap()
+
+    @RequestMapping(
+            path = ["/register"],
+            method = [RequestMethod.POST],
+            consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
+    )
+    fun register(@RequestParam("name") name: String, @RequestParam("password") pass: String): ResponseEntity<String> = when {
+        usersReg.contains(name) -> ResponseEntity.badRequest().body("Already registered")
+        name.isEmpty() -> ResponseEntity.badRequest().body("Name is too short")
+        name.length > 20 -> ResponseEntity.badRequest().body("Name is too long")
+        pass.isEmpty() || pass.length < 4 -> ResponseEntity.badRequest().body("Password is too short")
+        else -> {
+            usersReg[name] = pass
+            messages += "[$name] registered".also { log.info(it) }
+            ResponseEntity.ok("You registered")
         }
     }
 
@@ -46,7 +66,12 @@ class ChatController {
             method = [RequestMethod.GET],
             produces = [MediaType.TEXT_PLAIN_VALUE]
     )
-    fun online(): ResponseEntity<String> = TODO()
+    fun online(): ResponseEntity<String> = when {
+        usersOnline.isEmpty() -> ResponseEntity.ok().body("No users")
+        else -> {
+            ResponseEntity.ok().body(usersOnline.values.toList().sortedBy { it.toLowerCase() }.joinToString("\n"))
+        }
+    }
     /**
      * curl -X POST -i localhost:8080/chat/logout -d "name=MY_NAME"
      */

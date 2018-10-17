@@ -10,8 +10,23 @@
     overflow: auto;
 }
 
+.online {
+    background: #99CCCC;
+    font-family: "Courier New", Courier, monospace;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: 0;
+    overflow: auto;
+    height: 85%;
+    width: 20%;
+    position: absolute;
+    right: 10px;
+    top: 110px;
+}
+
 .form {
     height: 85%;
+    width: 75%;
 }
 
 .msginput {

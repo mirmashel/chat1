@@ -8,9 +8,13 @@
         <input id="name" name="name" value="" style="font-size:medium" type="text">
         <input value="Login" style="font-size:large" type="submit">
     </form>
+    <form method="GET" id="onlineform" action="javascript:void(null);" onsubmit="online()">
+        <input value="Online" style="font-size:large" type="submit">
+    </form>
 </div>
 <div id="body">
     <div id="history" class="chat form"></div>
+    <div id="online" class="online"></div>
 </div>
 <div id="footer">
     <form method="POST" id="msgform" action="javascript:void(null);" onsubmit="say()">
@@ -40,6 +44,31 @@
         }).fail(function (jqXHR, textStatus) {
             console.log(jqXHR.status + " " + jqXHR.statusText + ". " + jqXHR.responseText);
         });
+    }
+
+    function loadOnline() {
+        var settings = {
+            "crossDomain": true,
+            "url": "http://" + host + ":" + port + "/chat/online",
+            "method": "GET",
+        }
+
+        $.ajax(settings).done(function (response) {
+            $("#online").html(response.replace(/\n/g, "<br />"))
+            $("#online").scrollTop($("#online")[0].scrollHeight);
+        }).fail(function (jqXHR, textStatus) {
+            console.log(jqXHR.status + " " + jqXHR.statusText + ". " + jqXHR.responseText);
+        });
+    }
+
+    function online() {
+        var settings = {
+            "crossDomain": true,
+            "url": "http://" + host + ":" + port + "/chat/history",
+            "method": "GET",
+        }
+
+
     }
 
     function say() {
@@ -82,4 +111,6 @@
 
     loadHistory();
     setInterval(loadHistory, 10000);
+    loadOnline();
+    setInterval(loadOnline, 1000);
 </script>
