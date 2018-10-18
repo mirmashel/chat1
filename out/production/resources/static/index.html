@@ -6,10 +6,10 @@
 <div id="header">
     <form method="POST" id="nameform" action="javascript:void(null);" onsubmit="login()">
         <input id="name" name="name" value="" style="font-size:medium" type="text">
-        <input value="Login" style="font-size:large" type="submit">
+        <input value="Login" style="font-size:large" type="submit" class="login">
     </form>
     <form method="POST" id="nanaa" action="javascript:void(null);" onsubmit="logout()">
-        <input value="Logout" style="font-size:large" type="submit">
+        <input value="Logout" style="font-size:large" type="submit" class="logout">
     </form>
 
 </div>
@@ -30,6 +30,7 @@
 <script>
     var host = "localhost";
     var port = 8080;
+    $('#nanaa').hide();
     function loadHistory() {
         var settings = {
             "crossDomain": true,
@@ -74,6 +75,8 @@
         });
     }
     function login() {
+        $('#nanaa').show();
+        $('#nameform').hide();
         var name = $('#nameform').serialize();
         var settings = {
             "method": "POST",
@@ -89,6 +92,8 @@
         });
     }
     function logout() {
+        $('#nanaa').hide();
+        $('#nameform').show();
         var name = $('#nameform').serialize();
         var settings = {
             "method": "POST",
