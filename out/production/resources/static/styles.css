@@ -35,6 +35,18 @@
     width: 15%;
 }
 
+.login {
+
+}
+
+.logout {
+    color: red;
+    position: absolute;
+    left: 24.4%;
+    top: 4.5%;
+
+}
+
 #header {
     background: #336666;
     padding: 10px;
