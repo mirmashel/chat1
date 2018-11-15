@@ -28,7 +28,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
-    var host = "localhost";
+    var host = "35.237.75.165";
     var port = 8080;
     var logged = "";
     $('#nanaa').hide();
@@ -91,7 +91,7 @@
             console.log(jqXHR.status + " " + jqXHR.statusText + ". " + jqXHR.responseText);
         });
     }
-    function login() {1
+    function login() {
         var name = $('#nameform').serialize();
         console.log(logged);
         if (logged !== "")
@@ -152,6 +152,13 @@
             logged = ""
         }
     };
+    window.onbeforeunload = function close() {
+	console.log(logged);
+	if (logged !== "") {
+	    logout();
+
+	}
+    }
     loadHistory();
     loadOnline();
     setInterval(loadOnline, 1000);

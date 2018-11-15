@@ -1,6 +1,6 @@
 import org.gradle.internal.impldep.aQute.bnd.osgi.Analyzer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
+import org.gradle.jvm.tasks.Jar
 group = "io.rybalkinsd"
 version = "1.0-SNAPSHOT"
 
@@ -40,6 +40,14 @@ dependencies {
     ktlint("com.github.shyiko", "ktlint", "0.28.0")
 }
 
+val fatJar = task("fatJar", type = Jar::class) {
+    baseName = "${project.name}-fat"
+    manifest {
+        attributes["Main-Class"] = "io.rybalkinsd.kotlinbootcamp.server.ChatApplicationKt"
+    }
+    from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks["jar"] as CopySpec)
+}
 tasks {
     val ktlint by creating(JavaExec::class) {
         group = "verification"
@@ -51,6 +59,9 @@ tasks {
 
     "check" {
         dependsOn(ktlint)
+    }
+    "build" {
+        dependsOn(fatJar)
     }
 }
 
